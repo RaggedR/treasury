@@ -1,0 +1,69 @@
+THE TREASURY — what we are modelling, in plain English
+Version 0.1 — 2026-10-29
+
+Picture a company's books. The state here is a chart of accounts — a tree of
+accounts like cash, accounts-payable, sales, wages — each holding a balance. The
+world is those balances, and the one iron rule is double-entry. Money never
+appears or vanishes, it only moves, so every change touches two accounts at once
+and the two sides must be equal. A posting that does not balance is not a
+mistake to be corrected later — it is simply not a legal thing to do, and the
+books refuse it. Every posting that does go through is written into the journal,
+which is append-only. You never erase a journal entry. If something was wrong,
+you post a new reversing entry, and the mistake and its correction both stay on
+the record forever.
+
+Four people work the books, and again each is allowed to touch only their own
+corner.
+
+  - The auditor can read but never post. They can pull any account's balance,
+    run a trial balance to prove the whole thing still sums to zero, and read
+    the journal. Their job is to check, not to change.
+
+  - The payables clerk records what the firm owes and spends. They can post, but
+    only against the liability and expense accounts — the money-going-out side.
+
+  - The receivables clerk records what the firm is owed and earns. They can post
+    too, but only against the asset and income accounts — the money-coming-in
+    side. Notice that the clerks have the same command, post, but it is fenced
+    to different accounts for each of them. The permission is not only which
+    command but which accounts it may touch.
+
+  - The controller posts nothing routine. The controller delegates — hands a
+    stack of invoices to receivables and a stack of bills to payables — and then
+    does the thing only they may do, which is to open new accounts, reverse bad
+    entries, and close the period. To close the period they add up the
+    sub-accounts into their parents, all the way up the tree, and check that the
+    whole lot still balances.
+
+Now a scene. A batch of customer invoices arrives. The controller tells
+receivables "book these," and receivables posts each one as a debit to
+accounts-receivable and a credit to sales, with a reason like "invoice 1182,
+services rendered to Acme in October." Each posting balances, so each one
+commits and lands in the journal. Meanwhile a bill comes in that someone has
+keyed wrong, with the debit and credit not equal. The books refuse it outright —
+it never enters the journal, because an unbalanced posting is not a legal move.
+At period end the controller rolls every sub-account up into its parent, the
+balances sum, the trial balance comes out to zero, and the auditor independently
+confirms the books close.
+
+And this scales up. A parent company consolidates the ledgers of its
+subsidiaries. The parent never sees each subsidiary's individual accounts — it
+only receives one consolidated balance from each, rolled up and handed upward. A
+group's books are just ledgers nested inside a ledger.
+
+----------------------------------------------------------------------
+
+The shape underneath. There is a world of state, a set of workers who may each
+touch only their own slice of it, a boss who gathers their reports and issues
+the orders that actually change things, a hard rule that quietly refuses
+anything illegal, and a permanent record of every change and the reason for it.
+The treasury is the version that makes the adding-up honest, because here the
+reports really do sum. Its sibling, the starship, is the version that makes the
+delegation and the who-may-touch-what vivid. See the sibling showpiece at
+https://github.com/RaggedR/starship.
+
+The shape itself — a worker as a container morphism, the boss who gathers and
+decides, the gate that quietly refuses anything that does not balance — is
+MacBeth's. It is set down in Note 5, "The toy harness is a worker"
+(~/git/harness/toy-harness-is-a-worker.pdf), which MacBeth sent in
+~/git/harness/2026-10-11-macbeth-reply-toy-harness-is-a-worker.txt.
